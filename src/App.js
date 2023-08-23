@@ -40,8 +40,8 @@ function App() {
         if (window.LogUI) {
         let configurationObject = {
             logUIConfiguration: {
-                endpoint: 'ws://127.0.0.1:8000/ws/endpoint/', 
-                authorisationToken: 'eyJ0eXBlIjoibG9nVUktYXV0aG9yaXNhdGlvbi1vYmplY3QiLCJhcHBsaWNhdGlvbklEIjoiZThmNjM4NTItNjc0Ny00YWMxLWJlZGItYWNiYmE1OTliYmZhIiwiZmxpZ2h0SUQiOiI0Njc4ZWE0OC1kNDhmLTRmYjItODAwMS05ZDAwZjlhOTFlMzMifQ:1qYl9Q:8qr0ujC-CgaQ0SwJN13Q7e_PVw0UGguVGjFvjVjwWlU', 
+                endpoint: 'ws://145.38.187.5:7000/ws/endpoint/', 
+                authorisationToken: 'eyJ0eXBlIjoibG9nVUktYXV0aG9yaXNhdGlvbi1vYmplY3QiLCJhcHBsaWNhdGlvbklEIjoiYTUxNjM2ZjQtNjM1ZC00YjgyLWI0YmUtYjcyY2U4NzQwMGIxIiwiZmxpZ2h0SUQiOiI5Y2VkOGZhYS0wMmYxLTQ5ODQtOTQ0ZS00ZDg0MTlmZjM5NWUifQ:1qYtEz:K7Csg2iyMeUqzSflxDGRtfCaNtuVZxco-cDoSNEBSyw', 
                 verbose: true,
                 browserEvents: {
                   trackCursor: false,
