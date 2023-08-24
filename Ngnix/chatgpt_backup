@@ -1,7 +1,15 @@
 server {
-    listen 7000;
+    listen 7000 ssl; # Listen for HTTPS traffic on port 7000
 
-    server_name 145.38.187.5;
+    server_name ubuntu2004with1.chatgptusage-tu.src.surf-hosted.nl;
+
+    ssl_certificate /etc/letsencrypt/live/ubuntu2004with1.chatgptusage-tu.src.surf-hosted.nl/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/ubuntu2004with1.chatgptusage-tu.src.surf-hosted.nl/privkey.pem;
+
+
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline';";
+
+
 
     location /exp/ {
         proxy_pass http://localhost:3001;
@@ -9,11 +17,12 @@ server {
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
         proxy_set_header Host $host;
-}
-   location / {
-	    proxy_pass http://localhost:8000; # Assuming LogUI server runs on port 8000
-	    proxy_http_version 1.1;
-	    proxy_set_header Upgrade $http_upgrade;
-	    proxy_set_header Connection "upgrade";
+    }
+
+    location / {
+        proxy_pass http://localhost:8000; # Assuming LogUI server runs on port 8000
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
     }
 }

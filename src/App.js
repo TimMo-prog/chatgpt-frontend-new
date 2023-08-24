@@ -40,8 +40,8 @@ function App() {
         if (window.LogUI) {
         let configurationObject = {
             logUIConfiguration: {
-                endpoint: 'ws://145.38.187.5:7000/ws/endpoint/', 
-                authorisationToken: 'eyJ0eXBlIjoibG9nVUktYXV0aG9yaXNhdGlvbi1vYmplY3QiLCJhcHBsaWNhdGlvbklEIjoiYTUxNjM2ZjQtNjM1ZC00YjgyLWI0YmUtYjcyY2U4NzQwMGIxIiwiZmxpZ2h0SUQiOiI5Y2VkOGZhYS0wMmYxLTQ5ODQtOTQ0ZS00ZDg0MTlmZjM5NWUifQ:1qYtEz:K7Csg2iyMeUqzSflxDGRtfCaNtuVZxco-cDoSNEBSyw', 
+                endpoint: 'wss://ubuntu2004with1.chatgptusage-tu.src.surf-hosted.nl:7000/ws/endpoint/', 
+                authorisationToken: 'eyJ0eXBlIjoibG9nVUktYXV0aG9yaXNhdGlvbi1vYmplY3QiLCJhcHBsaWNhdGlvbklEIjoiYTUxNjM2ZjQtNjM1ZC00YjgyLWI0YmUtYjcyY2U4NzQwMGIxIiwiZmxpZ2h0SUQiOiI0NDRlMWE0My0zMDlmLTQ4NDktODlkNS1kN2JkODM2NTk2MjcifQ:1qZB5Z:l2Ts7KEo4PKsQGIne_hzau6CxGty4plgQrWG-KHtyZI', 
                 verbose: true,
                 browserEvents: {
                   trackCursor: false,
@@ -202,7 +202,7 @@ useEffect(() => {
     setLatestInput(input);
 
     try {
-      const response = await fetch('http://localhost:3000/ask', {
+      const response = await fetch('https://ubuntu2004with1.chatgptusage-tu.src.surf-hosted.nl:7000/exp/ask', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
