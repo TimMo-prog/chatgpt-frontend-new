@@ -339,12 +339,17 @@ return (
 }
 
 function FinishPage() {
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const prolificPid = searchParams.get('PROLIFIC_PID');
+    const code = prolificPid ? btoa(prolificPid).substring(0, 8) : 'NO_PID';
+
     return (
         <div className="finish-page-container">
             <div className="finish-page-content">
                 <h1>Thank you for intertacting with the ChatGPT bot!</h1>
                 <ol>
-                    <li>Please copy the CBZF8LI to the Qualtrics.</li>
+                    <li>Please copy the <strong>{code}</strong> to the Qualtrics.</li>
                     <li>Close this page.</li>
                 </ol>
             </div>
