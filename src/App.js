@@ -259,7 +259,7 @@ return (
     {showFeedbackPopup && (
       <div className="popup-overlay">
         <div className="popup">
-          <p>Please provide your feedback:</p>
+          <p>What was the issue with the response? How could it be improved?</p>
           <textarea 
             rows="4" 
             cols="50" 
