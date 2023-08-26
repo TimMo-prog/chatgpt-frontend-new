@@ -28,6 +28,8 @@ function App() {
   const searchParams = new URLSearchParams(location.search);
   const topicName = searchParams.get('TOPIC_NAME');
   const prolificPid = searchParams.get('PROLIFIC_PID');
+  console.log(searchParams.toString());
+  console.log("Prolific PID value:", prolificPid);
 
   const userMessageEvent = new Event('userMessageEvent');
   const chatGPTMessageEvent = new Event('chatGPTMessageEvent');
@@ -246,7 +248,7 @@ const saveFeedback = () => {
 const navigate = useNavigate();
 
 const handleFinish = () => {
-    navigate('/finish');
+    navigate(`/finish?PROLIFIC_PID=${prolificPid}`);
 };
 
 const handleTaskDescriptionToggle = () => {   
@@ -343,6 +345,8 @@ function FinishPage() {
     const searchParams = new URLSearchParams(location.search);
     const prolificPid = searchParams.get('PROLIFIC_PID');
     const code = prolificPid ? btoa(prolificPid).substring(0, 8) : 'NO_PID';
+    console.log(searchParams.toString());
+    console.log("Prolific PID value:", prolificPid);
 
     return (
         <div className="finish-page-container">
