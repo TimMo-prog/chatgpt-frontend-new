@@ -46,7 +46,14 @@ function App() {
                 authorisationToken: 'eyJ0eXBlIjoibG9nVUktYXV0aG9yaXNhdGlvbi1vYmplY3QiLCJhcHBsaWNhdGlvbklEIjoiYTUxNjM2ZjQtNjM1ZC00YjgyLWI0YmUtYjcyY2U4NzQwMGIxIiwiZmxpZ2h0SUQiOiI0NDRlMWE0My0zMDlmLTQ4NDktODlkNS1kN2JkODM2NTk2MjcifQ:1qZB5Z:l2Ts7KEo4PKsQGIne_hzau6CxGty4plgQrWG-KHtyZI', 
                 verbose: true,
                 browserEvents: {
-                  trackCursor: false,
+                    blockEventBubbling: false,
+                    eventsWhileScrolling: false,
+                    URLChanges: false,
+                    contextMenu: false,
+                    pageFocus: false,
+                    trackCursor: false,
+                    cursorUpdateFrequency: 4000,
+                    cursorLeavingPage: false,
                 },
             },
             applicationSpecificData: {
