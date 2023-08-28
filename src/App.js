@@ -202,6 +202,8 @@ useEffect(() => {
 
     setMessages([...messages, { type: 'User', text: input }]);
     setLatestInput(input);
+    
+    setMessages(prevMessages => [...prevMessages, { type: 'ChatGPT', text: "Generating answer…" }]);
 
     try {
       const response = await fetch('https://ubuntu2004with1.chatgptusage-tu.src.surf-hosted.nl:7000/exp/ask', {
@@ -215,11 +217,15 @@ useEffect(() => {
       const data = await response.json();
 
 
-setMessages(prevMessages => [...prevMessages, { 
-    type: 'ChatGPT', 
-    text: data.message, 
-    name: `CHATGPT_RESPONSE_${data.message.substring(0, 10).toUpperCase().replace(/\s+/g, '_')}` // Take the first 10 characters of the message, make it uppercase, and replace spaces with underscores.
-}]);
+        setMessages(prevMessages => {
+            const newMessages = [...prevMessages];
+            newMessages[newMessages.length - 1] = {
+                type: 'ChatGPT',
+                text: data.message,
+                name: `CHATGPT_RESPONSE_${data.message.substring(0, 10).toUpperCase().replace(/\s+/g, '_')}`
+            };
+            return newMessages;
+        });
 
 setLatestChatGPTMessage(data.message);
 
@@ -262,7 +268,8 @@ return (
       <div className="popup-overlay">
         <div className="popup">
           <p>What was the issue with the response? How could it be improved?</p>
-          <textarea 
+          <textarea
+            placeholder="Type your feedback..." 
             rows="4" 
             cols="50" 
             value={feedback} 
