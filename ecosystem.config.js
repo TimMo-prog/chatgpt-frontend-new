@@ -3,7 +3,7 @@ module.exports = {
     name: 'chatgpt',
     script: 'server.js',
     env: {
-      OPENAI_API_KEY: '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',
+      OPENAI_API_KEY: ' ',
       // other environment variables can be added here
     },
   }],
