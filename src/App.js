@@ -51,6 +51,7 @@ function App() {
             },
             applicationSpecificData: {
                 userID: userID, 
+                topicName: topicName,
             },
             trackingConfiguration: {
                 'input-change': {
