@@ -147,7 +147,7 @@ function App() {
     }
     }, [userID]);
 
-  // Assigning PROLIFIC_PID to userID
+
   useEffect(() => {
     if (prolificPid) {
       setUserID(prolificPid);
