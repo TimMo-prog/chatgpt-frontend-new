@@ -7,8 +7,8 @@ import { useLocation } from 'react-router-dom';
 
 
 import './App.css';
-import userAvatar from './images/userAvatar.svg'; // Reference: https://freesvg.org/vector-clip-art-of-user-symbol
-import chatbotAvatar from './images/chatbotAvatar.svg'; // Reference: https://freesvg.org/1538298822
+import userAvatar from './images/people.svg'; // Reference: https://www.shareicon.net/avatar-social-profile-people-user-794381#google_vignette
+import chatbotAvatar from './images/ChatGPT_logo.svg'; // Reference: https://commons.wikimedia.org/wiki/File:ChatGPT_logo.svg
 
 
 function App() {
@@ -193,6 +193,11 @@ useEffect(() => {
     }
 }, [latestInput]);
 
+useEffect(() => {
+  const chatWindow = document.querySelector('.chat-window');
+  chatWindow.scrollTop = chatWindow.scrollHeight;
+}, [messages]);
+
 
 
 
@@ -319,11 +324,18 @@ return (
 
 <div className="chat-window">
     {messages.map((message, index) => (
-        <div key={index} className={`message ${message.type.toLowerCase()}`}>
-            <img src={message.type === 'User' ? userAvatar : chatbotAvatar} alt={`${message.type} avatar`} className="avatar" />
-            <span data-name={message.name}><strong>{message.type}:</strong> {message.text}</span>
-            {message.type === 'ChatGPT' && 
-                <button className="feedback-button" onClick={handleFeedbackPopup}>Provide Feedback</button>}
+        <div key={index} className={`message ${message.type.toLowerCase()} ${index % 2 === 0 ? 'even' : 'odd'}`}>
+            <div className="message-content">
+                <div className="text-avatar">
+                    <img src={message.type === 'User' ? userAvatar : chatbotAvatar} alt={`${message.type} avatar`} className="avatar" />
+                </div>
+                <span data-name={message.name}><strong>{message.type}:</strong> {message.text}</span>
+                {message.type === 'ChatGPT' && 
+                    <button className="feedback-button" onClick={handleFeedbackPopup}>
+  Provide<br />Feedback
+</button>
+}
+            </div>
         </div>
     ))}
     <input type="hidden" id="latestInput" value={latestInput} />
@@ -332,15 +344,19 @@ return (
 
 
 
+
+
+<div class="chat-input-wrapper">
       <div className="chat-input">
         <input 
-            placeholder="Type your message..." 
+            placeholder="Send a message..." 
             value={input} 
             onChange={(e) => setInput(e.target.value)} 
             onKeyPress={(e) => e.key === 'Enter' && handleSend()}
             onKeyUp={(e) => handleKeyUp(e)}
         />
         <button onClick={handleSend}>Send</button>
+      </div>
       </div>
     </div>
   </>
