@@ -9,7 +9,8 @@ import { useLocation } from 'react-router-dom';
 import './App.css';
 import userAvatar from './images/people.svg'; // Reference: https://www.shareicon.net/avatar-social-profile-people-user-794381#google_vignette
 import chatbotAvatar from './images/ChatGPT_logo.svg'; // Reference: https://commons.wikimedia.org/wiki/File:ChatGPT_logo.svg
-
+import thumbUp from './images/thumbs-up-svgrepo-com.svg';
+import thumbDown from './images/thumb-down-svgrepo-com.svg';
 
 function App() {
   const [userID, setUserID] = useState('user123');
@@ -18,10 +19,13 @@ function App() {
   const [chatGPTOutput, setChatGPTOutput] = useState([]);
   const [latestInput, setLatestInput] = useState('');
   const [latestChatGPTMessage, setLatestChatGPTMessage] = useState('');
+  const [latestFeedback, setLatestFeedback] = useState('');
   const [showPopup, setShowPopup] = useState(true);
   const [showTaskDescription, setShowTaskDescription] = useState(false);
   const [showFeedbackPopup, setShowFeedbackPopup] = useState(false);
   const [feedback, setFeedback] = useState('');
+  const [showLikePopup, setShowLikePopup] = useState(false);
+  const [showDislikePopup, setShowDislikePopup] = useState(false);
 
 
   const location = useLocation();
@@ -33,6 +37,7 @@ function App() {
 
   const userMessageEvent = new Event('userMessageEvent');
   const chatGPTMessageEvent = new Event('chatGPTMessageEvent');
+  const userFeedbackEvent = new Event('userFeedbackEvent');
   const handleKeyUp = (event) => {
     console.log(event);
 };
@@ -68,16 +73,34 @@ function App() {
                     ]
                 },
 
+                                'input-change': {
+                    selector: '.chat-input input',
+                    event: 'keyup',
+                    name: 'INPUT_CHANGE',
+                    metadata: [
+                        {
+                            nameForLog: 'inputValue',
+                            sourcer: 'elementProperty',
+                            lookFor: 'value',
+                        }
+                    ]
+                },
+
                 // Click event
                 'message-send': {
                     selector: '.chat-input button',
                     event: 'click',
                     name: 'MESSAGE_SEND'
                 },
-                'feedback-popup-opened': {
-                    selector: '.feedback-button',
+                'positive-feedback-popup-opened': {
+                    selector: '#positive-feedback-button',
                     event: 'click',
-                    name: 'FEEDBACK_POPUP_OPENED'
+                    name: 'POSITIVE_FEEDBACK_POPUP_OPENED'
+                },
+                'negative-feedback-popup-opened': {
+                    selector: '#negative-feedback-button',
+                    event: 'click',
+                    name: 'NEGATIVE_FEEDBACK_POPUP_OPENED'
                 },
                 'save-feedback': {
                     selector: '.feedback-saving-button',
@@ -111,7 +134,22 @@ function App() {
                   event: 'focus',
                   name: 'INPUT_FOCUSED',
                 },
+
                 // Self-defined Events
+                'user-feedback-event': {
+                  selector: '.chat-window',
+                  event: 'userFeedbackEvent',
+                  name: 'USER_FEEDBACK_EVENT',
+                  metadata: [
+                      {
+                          nameForLog: 'latestFeedback',
+                          sourcer: 'elementProperty',
+                          lookFor: 'value',
+                          onElement: '#latestFeedback',
+                      }
+                  ]
+                },
+
                 'user-message-event': {
                   selector: '.chat-window',
                   event: 'userMessageEvent',
@@ -194,6 +232,18 @@ useEffect(() => {
 }, [latestInput]);
 
 useEffect(() => {
+    if (latestFeedback) {
+        const chatWindow = document.querySelector('.chat-window');
+        const userFeedbackEvent = new CustomEvent('userFeedbackEvent', {
+            detail: { content: latestFeedback }
+        });
+        console.log("Dispatching userFeedbackEvent:", userFeedbackEvent);
+        chatWindow.dispatchEvent(userFeedbackEvent);
+    }
+}, [latestFeedback]);
+
+
+useEffect(() => {
   const chatWindow = document.querySelector('.chat-window');
   chatWindow.scrollTop = chatWindow.scrollHeight;
 }, [messages]);
@@ -248,14 +298,20 @@ setLatestChatGPTMessage(data.message);
   setShowPopup(false);
 };
 
-const handleFeedbackPopup = () => {
-  setShowFeedbackPopup(true);
+const handleFeedbackPopup = (thumb) => {
+    if (thumb === 'up') {
+        setShowLikePopup(true);
+    } else if (thumb === 'down') {
+        setShowDislikePopup(true);
+    }
 };
 
 const saveFeedback = () => {
-  console.log(feedback);
-  setFeedback('');
-  setShowFeedbackPopup(false);
+    console.log(feedback);
+    setFeedback(feedback);
+    setLatestFeedback(feedback);
+    setShowLikePopup(false);
+    setShowDislikePopup(false);
 };
 
 const navigate = useNavigate();
@@ -270,22 +326,39 @@ const handleTaskDescriptionToggle = () => {
 
 return (
   <>
-    {/* Feedback Popup */}
-    {showFeedbackPopup && (
-      <div className="popup-overlay">
-        <div className="popup">
-          <p>What was the issue with the response? How could it be improved?</p>
-          <textarea
-            placeholder="Type your feedback..." 
-            rows="4" 
-            cols="50" 
-            value={feedback} 
-            onChange={(e) => setFeedback(e.target.value)}
-          />
-          <button className="feedback-saving-button" onClick={saveFeedback}>Save Feedback</button>
-        </div>
-      </div>
-    )}
+        {/* Like Popup */}
+        {showLikePopup && (
+            <div className="popup-overlay">
+                <div className="popup">
+                    <p>Provide additional feedback</p>
+                    <textarea
+                        placeholder="What would you like about the response?" 
+                        rows="4" 
+                        cols="50" 
+                        value={feedback} 
+                        onChange={(e) => setFeedback(e.target.value)}
+                    />
+                    <button className="feedback-saving-button" onClick={saveFeedback}>Submit Feedback</button>
+                </div>
+            </div>
+        )}
+
+        {/* Dislike Popup */}
+        {showDislikePopup && (
+            <div className="popup-overlay">
+                <div className="popup">
+                    <p>Provide additional feedback</p>
+                    <textarea
+                        placeholder="What was the issue with the response? How could it be improved?" 
+                        rows="4" 
+                        cols="50" 
+                        value={feedback} 
+                        onChange={(e) => setFeedback(e.target.value)}
+                    />
+                    <button className="feedback-saving-button" onClick={saveFeedback}>Submit Feedback</button>
+                </div>
+            </div>
+        )}
 
     {/* Task Starting Popup */}
       {showPopup && (
@@ -330,16 +403,23 @@ return (
                     <img src={message.type === 'User' ? userAvatar : chatbotAvatar} alt={`${message.type} avatar`} className="avatar" />
                 </div>
                 <span data-name={message.name}><strong>{message.type}:</strong> {message.text}</span>
-                {message.type === 'ChatGPT' && 
-                    <button className="feedback-button" onClick={handleFeedbackPopup}>
-  Provide<br />Feedback
-</button>
+{message.type === 'ChatGPT' && 
+    <div>
+            <button className="feedback-button" id="negative-feedback-button" onClick={() => handleFeedbackPopup('down')}>
+            <img src={thumbDown} alt="Thumb Down" className="thumb-icon"/>
+        </button>
+        <button className="feedback-button" id = "positive-feedback-button" onClick={() => handleFeedbackPopup('up')}>
+            <img src={thumbUp} alt="Thumb Up" className="thumb-icon" />
+        </button>
+
+    </div>
 }
             </div>
         </div>
     ))}
     <input type="hidden" id="latestInput" value={latestInput} />
     <input type="hidden" id="latestChatGPTMessage" value={latestChatGPTMessage} />
+    <input type="hidden" id="latestFeedback" value={latestFeedback} />
 </div>
 
 
