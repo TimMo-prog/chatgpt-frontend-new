@@ -453,7 +453,8 @@ function FinishPage() {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const prolificPid = searchParams.get('PROLIFIC_PID');
-    const code = prolificPid ? btoa(prolificPid).substring(0, 8) : 'NO_PID';
+    const hashString = hashCode(prolificPid).toString(16);
+    const code = prolificPid ? hashString.slice(0, 8) : 'NO_PID';
     console.log(searchParams.toString());
     console.log("Prolific PID value:", prolificPid);
 
@@ -468,6 +469,16 @@ function FinishPage() {
             </div>
         </div>
     );
+}
+
+function hashCode(str) {
+    let hash = 0;
+    for (let i = 0, len = str.length; i < len; i++) {
+        let chr = str.charCodeAt(i);
+        hash = (hash << 5) - hash + chr;
+        hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
 }
 
 
