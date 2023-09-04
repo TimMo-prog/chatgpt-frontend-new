@@ -245,6 +245,11 @@ body, html {
     font-size: large;
 }
 
+.send-icon {
+    width: 24px;
+    height: 24px;
+}
+
 .message.even {
     background-color: #ffffff;
 }

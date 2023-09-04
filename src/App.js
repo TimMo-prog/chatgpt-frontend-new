@@ -9,6 +9,7 @@ import { useLocation } from 'react-router-dom';
 import './App.css';
 import userAvatar from './images/people.svg'; // Reference: https://www.shareicon.net/avatar-social-profile-people-user-794381#google_vignette
 import chatbotAvatar from './images/ChatGPT_logo.svg'; // Reference: https://commons.wikimedia.org/wiki/File:ChatGPT_logo.svg
+import sendIcon from './images/send-svgrepo-com.svg'; // Referfence: https://www.svgrepo.com/svg/451295/send
 import thumbUp from './images/thumbs-up-svgrepo-com.svg';
 import thumbDown from './images/thumb-down-svgrepo-com.svg';
 
@@ -312,6 +313,7 @@ const saveFeedback = () => {
     setLatestFeedback(feedback);
     setShowLikePopup(false);
     setShowDislikePopup(false);
+    setFeedback('');
 };
 
 const navigate = useNavigate();
@@ -435,7 +437,9 @@ return (
             onKeyPress={(e) => e.key === 'Enter' && handleSend()}
             onKeyUp={(e) => handleKeyUp(e)}
         />
-        <button onClick={handleSend}>Send</button>
+        <button onClick={handleSend}  aria-label="Send message">
+        <img src={sendIcon} alt="Send" className="send-icon" />
+        </button>
       </div>
       </div>
     </div>
