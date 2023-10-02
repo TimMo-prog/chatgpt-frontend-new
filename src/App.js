@@ -27,6 +27,8 @@ function App() {
   const [feedback, setFeedback] = useState('');
   const [showLikePopup, setShowLikePopup] = useState(false);
   const [showDislikePopup, setShowDislikePopup] = useState(false);
+  const [isFirstMessageSent, setIsFirstMessageSent] = useState(false);
+
 
 
   const location = useLocation();
@@ -193,20 +195,38 @@ function App() {
     }
   }, [prolificPid]);
 
-  const getTaskDescription = (topic) => {
+
+const getTaskDescription = (topic) => {
     const descriptions = {
-      'altitude_sickness': 'Your task is to acquire information about the different treatments for altitude sickness.',
-      
-      'american_revolutionary_war': 'Your task is to acquire information about key battles of the American Revolutionary War and their impact.',
-      
-      'carpenter_bees': 'Your task is to acquire information about types of habitats carpenter bees prefer.',
-      
-      'theory_of_evolution':'Your task is to acquire information about main criticisms of the theory of evolution.',
-      
-      'NASA':'Your task is to acquire information about major discoveries from NASA’s Mars Opportunity Rover.',
+      'altitude_sickness': (
+        <>
+          Your task is to acquire information about <strong>the different treatments for altitude sickness</strong>.
+        </>
+      ),
+      'american_revolutionary_war': (
+        <>
+          Your task is to acquire information about <strong>key battles of the American Revolutionary War and their impact</strong>.
+        </>
+      ),
+      'carpenter_bees': (
+        <>
+          Your task is to acquire information about <strong>types of habitats carpenter bees prefer</strong>.
+        </>
+      ),
+      'theory_of_evolution': (
+        <>
+          Your task is to acquire information about <strong>main criticisms of the theory of evolution</strong>.
+        </>
+      ),
+      'NASA': (
+        <>
+          Your task is to acquire information about <strong>major discoveries from NASA’s Mars Opportunity Rover</strong>.
+        </>
+      ),
     };
     return descriptions[topic] || 'TOPIC_NAME does not exist';
-  };
+};
+
 
 
 
@@ -260,7 +280,7 @@ useEffect(() => {
 
     setMessages([...messages, { type: 'User', text: input }]);
     setLatestInput(input);
-    
+    setIsFirstMessageSent(true);
     setMessages(prevMessages => [...prevMessages, { type: 'ChatGPT', text: "Generating answer…" }]);
 
     try {
@@ -274,7 +294,8 @@ useEffect(() => {
 
       const data = await response.json();
 
-
+        console.log("data.message: ")
+        console.log(data.message)
         setMessages(prevMessages => {
             const newMessages = [...prevMessages];
             newMessages[newMessages.length - 1] = {
@@ -368,12 +389,17 @@ return (
           <div className="popup">
             <h3> Welcome to the Chat with ChatGPT!</h3>
             <div className="task-description-frame">
-            <p>{getTaskDescription(topicName)}</p>
+            {getTaskDescription(topicName)}
+            </div>
+            <div className="underlined-text">
+                <p><em>Since there probably is a knowledge test on this task at the end of the survey, we encourage you to seek as much information as possible to satisfy your information needs for this task!</em></p>
             </div>
             <p>If you forget the task contents, you can click the 'Task Description' button on the top left corner.</p>
+            <div className="underlined-text">
             <p>
               When you complete the conversation, you can click the "I am done!" button at the top right of your screen to take you to another page where you can know what to do next.
             </p>
+            </div>
             <button className="start-button" onClick={handleStart}>Start</button>
           </div>
         </div>
@@ -394,7 +420,8 @@ return (
       <div className="chat-header">
         <button className="task-description-button" onClick={handleTaskDescriptionToggle}>Task Description</button>
         Chat with ChatGPT 
-        <button className="finish-button" onClick={handleFinish}>I am done!</button>
+        {isFirstMessageSent && <button className="finish-button" onClick={handleFinish}>I am done!</button>}
+
       </div>
 
 <div className="chat-window">
@@ -404,7 +431,7 @@ return (
                 <div className="text-avatar">
                     <img src={message.type === 'User' ? userAvatar : chatbotAvatar} alt={`${message.type} avatar`} className="avatar" />
                 </div>
-                <span data-name={message.name}><strong>{message.type}:</strong> {message.text}</span>
+                <span data-name={message.name} style={{ whiteSpace: 'pre-line' }}><strong>{message.type}:</strong> {message.text}</span>
 {message.type === 'ChatGPT' && 
     <div>
             <button className="feedback-button" id="negative-feedback-button" onClick={() => handleFeedbackPopup('down')}>
@@ -437,10 +464,13 @@ return (
             onKeyPress={(e) => e.key === 'Enter' && handleSend()}
             onKeyUp={(e) => handleKeyUp(e)}
         />
-        <button onClick={handleSend}  aria-label="Send message">
+        <div className="disclaimer">
+            ChatGPT may produce inaccurate information about people, places, or facts.
+        </div>
+      </div>
+              <button className="input-button" onClick={handleSend}  aria-label="Send message">
         <img src={sendIcon} alt="Send" className="send-icon" />
         </button>
-      </div>
       </div>
     </div>
   </>
