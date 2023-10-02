@@ -392,12 +392,12 @@ return (
             {getTaskDescription(topicName)}
             </div>
             <div className="underlined-text">
-                <p><em>Since there probably is a knowledge test on this task at the end of the survey, we encourage you to seek as much information as possible to satisfy your information needs for this task!</em></p>
+                <p><em>Please engage with ChatGPT to the best of your ability to gain as much information as possible. You will have the opportunity to attain a bonus payoff depending on a knowledge test on this topic at the end of the task. To maximize your potential to receive this bonus, do your best to satisfy your information needs in this task!</em></p>
             </div>
             <p>If you forget the task contents, you can click the 'Task Description' button on the top left corner.</p>
             <div className="underlined-text">
             <p>
-              When you complete the conversation, you can click the "I am done!" button at the top right of your screen to take you to another page where you can know what to do next.
+              When you complete the conversation, you can click the "I am done!" button at the top right of your screen to take you to another page where you can learn about the next steps.
             </p>
             </div>
             <button className="start-button" onClick={handleStart}>Start</button>
