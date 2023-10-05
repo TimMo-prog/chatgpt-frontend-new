@@ -312,6 +312,7 @@ setLatestChatGPTMessage(data.message);
     } catch (error) {
       console.error("Error communicating with backend:", error);
       setMessages(prevMessages => [...prevMessages, { type: 'ChatGPT', text: "Sorry, I couldn't process that request." }]);
+      setLatestChatGPTMessage("Sorry, I couldn't process that request.");
     }
 
   };
