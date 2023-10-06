@@ -51,7 +51,7 @@ function App() {
         let configurationObject = {
             logUIConfiguration: {
                 endpoint: 'wss://ubuntu2004with1.chatgptusage-tu.src.surf-hosted.nl:7000/ws/endpoint/', 
-                authorisationToken: 'eyJ0eXBlIjoibG9nVUktYXV0aG9yaXNhdGlvbi1vYmplY3QiLCJhcHBsaWNhdGlvbklEIjoiYTUxNjM2ZjQtNjM1ZC00YjgyLWI0YmUtYjcyY2U4NzQwMGIxIiwiZmxpZ2h0SUQiOiI0NDRlMWE0My0zMDlmLTQ4NDktODlkNS1kN2JkODM2NTk2MjcifQ:1qZB5Z:l2Ts7KEo4PKsQGIne_hzau6CxGty4plgQrWG-KHtyZI', 
+                authorisationToken: 'eyJ0eXBlIjoibG9nVUktYXV0aG9yaXNhdGlvbi1vYmplY3QiLCJhcHBsaWNhdGlvbklEIjoiNmQ1NWMwYTYtZmNlZC00ODk0LWFmMDctNDA1MDVkN2E0ZDEyIiwiZmxpZ2h0SUQiOiI0ZjFlMzIyYS0zZGU0LTQ4NDQtOGRjNS1lMmU5NjM3N2QyZTQifQ:1qohDw:-IQsoQqquGHrVHscBW-sMWhLpKQfp7ttYtBXIvq7OQM', 
                 verbose: true,
                 browserEvents: {
                     trackCursor: false,
